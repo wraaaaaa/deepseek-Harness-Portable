@@ -1,0 +1,7 @@
+{
+  "name": "dsh-portable-shell",
+  "private": true,
+  "version": "1.0.0",
+  "description": "DSH portable shell: server bootstrap shared by the x64 Electron entry and the x86 browser entry",
+  "main": "electron-main.js"
+}

@@ -1,0 +1,30 @@
+# ==== DSH 便携版 · 源码仓库 .gitignore ====
+# 设计原则见 README「为什么源码进仓库、二进制进 Release」
+
+# 运行时数据（含 API Key、会话记录、缓存、插件安装产物 —— 绝不入库）
+data/
+
+# 升级备份（upgrade.ps1 生成）
+data-backup-*/
+
+# 构建产物（大二进制，由 build.ps1 下载/安装，走 GitHub Release 分发）
+app/
+node/
+electron/
+tools/
+
+# 发布产物（本地打包出的 zip 与组装目录）
+dist/
+
+# 临时上传工具（手动发布 Release 用，不进仓库）
+上传Release附件.bat
+
+# 日志与临时文件
+*.log
+*.tmp
+*.bak
+
+# 系统/编辑器杂物
+Thumbs.db
+desktop.ini
+.DS_Store
