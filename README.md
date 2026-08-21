@@ -147,7 +147,7 @@ DSH 和它的依赖会把数据写到很多地方。我们的做法是：**用�
 
 ### 3.4 为什么构建脚本用 npm 现装内核，而不是提交 node_modules？
 
-`app/node_modules` 有约 2.4 万个文件、239MB，全部提交进 git 既臃肿又难审阅。而 DSH 本身就是发布在 npm 上的包，`npm install @deepseek-ai/dsh@0.1.0-rc.7` 一条命令就能**从官方源原样还原内核**——这比提交一份二进制快照更透明、更可验证（你能对着 npm 源审计每一个文件）。
+`app/node_modules` 有约 2.4 万个文件、239MB，全部提交进 git 既臃肿又难审阅。而 DSH 本身就是发布在 npm 上的包，用内置 pnpm 一条命令 `pnpm add @deepseek-ai/dsh@0.1.1-rc.2` 就能**从官方源原样还原内核**（注意：用 npm 会因 DSH 庞大的 peer 依赖图卡死，构建脚本已改用 pnpm 扁平布局）——这比提交一份二进制快照更透明、更可验证（你能对着 npm 源审计每一个文件）。
 
 ---
 
@@ -160,9 +160,9 @@ DSH 和它的依赖会把数据写到很多地方。我们的做法是：**用�
 | `node-pty` 纯 JS 垫片 | 第三方依赖（非 DSH） | 官方与所有 fork 均不提供 win32-ia32 预编译 | **无**（x64 走原生二进制，垫片分支不进入） | 终端由垫片实现（能跑命令、可输入输出，但无完整 PTY 语义） |
 | `dsh-sandbox-windows-acl` 结构尺寸按架构取值 | DSH 自带的 Windows 沙箱包 | 官方把 Windows 结构体尺寸硬编码为 64 位的值（104/24），32 位应为 68/16 | **无**（`process.arch==='ia32'` 为假，取值仍是 104/24，行为逐字节一致） | 修正为 32 位正确布局，沙箱正常工作 |
 
-两处补丁的完整源码在 [`patches/`](patches/)（`apply-patches.js` 幂等应用，`ia32-shim.js` 是垫脚本体），可逐行审阅。**64 位用户得到的是一份行为与官方 `@deepseek-ai/dsh@0.1.0-rc.7` 完全一致的 DSH。**
+两处补丁的完整源码在 [`patches/`](patches/)（`apply-patches.js` 幂等应用，`ia32-shim.js` 是垫脚本体），可逐行审阅。**64 位用户得到的是一份行为与官方 `@deepseek-ai/dsh@0.1.1-rc.2` 完全一致的 DSH。**
 
-> 注：DSH 版本为 **0.1.0-rc.7**（发布前候选版）。将来官方发正式版后，双击 `升级DSH.bat`（或 `powershell -File upgrade.ps1 -Version <版本>`）即可一键升级内核，脚本会自动备份 `data/`。
+> 注：DSH 版本为 **0.1.1-rc.2**（发布前候选版）。将来官方发正式版后，双击 `升级DSH.bat`（或 `powershell -File upgrade.ps1 -Version <版本>`）即可一键升级内核，脚本会自动备份 `data/`。
 
 ---
 
